@@ -41,3 +41,107 @@ Categories=Development;Code;
     2.4. O Postman também pode ser acessado informando 'postman' no shell
 3. Criar BD: Iniciar Apache e MySQL XAMPP e, no Phpmyadmin, criar BD: 'CREATE DATABASE artigos;'
 4. Criar projeto Laravel: 'composer create-project --prefer-dist laravel/laravel laravelApiRest'
+5. Configurar BD em .env: 'DB_DATABASE=artigos'
+
+
+## Passo a passo
+1. Criar Model, migration e Controller:
+php artisan make:model Artigo -m
+php artisan migrate
+php artisan make:controller ArtigoController --resource
+2. Definir Controller ArtigoController
+~~~php
+<?php
+namespace App\Http\Controllers;
+use App\Models\Artigo as Artigo;
+use App\Http\Resources\Artigo as ArtigoResource;
+use Illuminate\Http\Request;
+
+class ArtigoController extends Controller {
+
+    public function index() {
+        $artigos = Artigo::paginate(15);
+        return ArtigoResource::collection($artigos);
+    }
+
+    public function show($id) {
+        $artigo = Artigo::findOrFail( $id );
+        return new ArtigoResource($artigo);
+    }
+
+    public function store(Request $request) {
+        $artigo = new Artigo;
+        $artigo->titulo = $request->input('titulo');
+        $artigo->conteudo = $request->input('conteudo');
+
+        if($artigo->save()) {
+            return new ArtigoResource($artigo);
+        }
+    }
+
+    public function update(Request $request) {
+        $artigo = Artigo::findOrFail($request->id);
+        $artigo->titulo = $request->input('titulo');
+        $artigo->conteudo = $request->input('conteudo');
+
+        if( artigo->save()) {
+            return new ArtigoResource($artigo);
+        }
+    } 
+
+    public function destroy($id) {
+        $artigo = Artigo::findOrFail($id);
+        if($artigo->delete()) {
+            return new ArtigoResource($artigo);
+        }
+    }
+}
+~~~
+
+3. Criar Routes em routes/api.php
+~~~php
+<?php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArtigoController;
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::get('artigos',[ArtigoController::class,'index']); //Listar artigos
+Route::get('artigo/{id}',[ArtigoController::class,'show']); //Ver artigo
+Route::post('artigo',[ArtigoController::class,'store']); //Criar artigo
+Route::put('artigo/{id}',[ArtigoController::class,'update']); //Editar artigo
+Route::delete('artigo/{id}',[ArtigoController::class,'destroy']); //Excluir artigo
+~~~
+
+4. Criar Resource em app/Http/Resources/Artigo.php: 'php artisan make:resource Artigo'
+~~~php
+<?php
+namespace App\Http\Resources;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class Artigo extends JsonResource {
+
+    public function toArray($request){
+        //return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'titulo' => $this->titulo,
+            'conteudo' => $this->conteudo
+        ];
+    }
+
+    /* public function with( $request ){
+        return [
+            'version' => '1.0.0',
+            'author_url' => url('https://ubsocial.github.io')
+        ];
+    } */
+}
+~~~
+
+5. Executar projeto Laravel: 'php artisan serve' (http://127.0.0.1:8000)
+6. No Postman, testar API:
+POST: http:127.0.0.1:8000/artigos/public/api/artigo , Headers(KEY → Content-Type) and VALUE(application/json) + Body(raw):
