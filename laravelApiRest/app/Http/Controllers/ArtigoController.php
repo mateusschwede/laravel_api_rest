@@ -12,7 +12,7 @@ class ArtigoController extends Controller {
     }
 
     public function show($id) {
-        $artigo = Artigo::findOrFail( $id );
+        $artigo = Artigo::findOrFail($id);
         return new ArtigoResource($artigo);
     }
 

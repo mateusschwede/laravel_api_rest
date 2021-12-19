@@ -47,9 +47,33 @@ Categories=Development;Code;
 ## Passo a passo
 1. Criar Model, migration e Controller:
 php artisan make:model Artigo -m
-php artisan migrate
 php artisan make:controller ArtigoController --resource
-2. Definir Controller ArtigoController
+
+2. Configurar Migration reate_artigos_table.php (Após código, realizar comando 'php artisan migrate')
+~~~php
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateArtigosTable extends Migration {
+
+    public function up() {
+        Schema::create('artigos', function (Blueprint $table) {
+            $table->id();
+            $table->string('titulo');
+            $table->text('conteudo');
+            $table->timestamps();
+        });
+    }
+
+    public function down() {
+        Schema::dropIfExists('artigos');
+    }
+}
+~~~
+
+3. Definir Controller ArtigoController
 ~~~php
 <?php
 namespace App\Http\Controllers;
@@ -98,7 +122,7 @@ class ArtigoController extends Controller {
 }
 ~~~
 
-3. Criar Routes em routes/api.php
+4. Criar Routes em routes/api.php
 ~~~php
 <?php
 use Illuminate\Http\Request;
@@ -116,7 +140,7 @@ Route::put('artigo/{id}',[ArtigoController::class,'update']); //Editar artigo
 Route::delete('artigo/{id}',[ArtigoController::class,'destroy']); //Excluir artigo
 ~~~
 
-4. Criar Resource em app/Http/Resources/Artigo.php: 'php artisan make:resource Artigo'
+5. Criar Resource em app/Http/Resources/Artigo.php: 'php artisan make:resource Artigo'
 ~~~php
 <?php
 namespace App\Http\Resources;
@@ -142,6 +166,48 @@ class Artigo extends JsonResource {
 }
 ~~~
 
-5. Executar projeto Laravel: 'php artisan serve' (http://127.0.0.1:8000)
-6. No Postman, testar API:
-POST: http:127.0.0.1:8000/artigos/public/api/artigo , Headers(KEY → Content-Type) and VALUE(application/json) + Body(raw):
+6. Executar projeto Laravel: 'php artisan serve' (http://127.0.0.1:8000)
+7. No Postman, testar API para inserir artigo: (Deverá retornar JSON e inserir no BD)
+POST: http://127.0.0.1:8000/api/artigo
+(Headers)
+Key: Content-Type
+Value: application/json
+(Body raw) (Enviar 1 por vez)
+~~~json
+{
+    "titulo": "Primeiro artigo pelo Postman",
+    "conteudo": "Descrição desse artigo de número um."
+}
+
+{
+    "titulo": "Segundo artigo pelo Postman",
+    "conteudo": "Descrição desse artigo de número dois."
+}
+
+{
+    "titulo": "Terceiro artigo pelo Postman",
+    "conteudo": "Descrição desse artigo de número três."
+}
+~~~
+
+8. No Postman, testar API para listar artigos: (Mostrará em data no JSON)
+GET: http://127.0.0.1:8000/api/artigos
+
+9. No Postman, testar API para ver somente o 1º artigo:
+GET: http://127.0.0.1:8000/api/artigo/1
+
+10. No Postman, testar API para editar o artigo 1:
+PUT: http://127.0.0.1:8000/api/artigo/1
+(Headers)
+Key: Content-Type
+Value: application/json
+(Body raw)
+~~~json
+{
+    "titulo": "ATUALIZANDO Primeiro artigo pelo Postman",
+    "conteudo": "Descrição desse artigo de número um sendo ATUALIZADO."
+}
+~~~
+
+11. o Postman, testar API para remover o artigo 1:
+DELETE: http://127.0.0.1:8000/api/artigo/1
