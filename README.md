@@ -28,7 +28,7 @@ Aplicação Front-end envia requisição HTTP com métodos REST para Back-end, q
 1. Instalação e configuração do Laravel (Ver resumo Laravel aqui no UB Social)
 2. Instalar Postman:
     2.1. Baixar, no site oficial, Postman Client (.tar.xz) e extraí-lo
-    2.2. No diretório do .tar.xz, realizar os comandos: sudo mv Postman /opt && sudo ln -s /opt/Postman/Postman /usr/local/bin/postman
+    2.2. No diretório do Postman, realizar os comandos: sudo mv Postman /opt && sudo ln -s /opt/Postman/Postman /usr/local/bin/postman
     2.3. Criar lançador desktop para fácil acesso: sudo nano /usr/share/applications/postman.desktop
 (Conteúdo dentro de poastman.desktop)
 [Desktop Entry]
@@ -40,4 +40,4 @@ Comment=Postman GUI
 Categories=Development;Code;
     2.4. O Postman também pode ser acessado informando 'postman' no shell
 3. Criar BD: Iniciar Apache e MySQL XAMPP e, no Phpmyadmin, criar BD: 'CREATE DATABASE artigos;'
-4. Configurar BD em .env:
+4. Criar projeto Laravel: 'composer create-project --prefer-dist laravel/laravel laravelApiRest'
