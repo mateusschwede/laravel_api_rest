@@ -1,5 +1,7 @@
-# laravel_api_rest
-API REST com Laravel.
+# API REST com Laravel
+<img src="https://ubsocial.github.io/anexos/icons/logoBranco.png" alt="UB Social" width="20"/> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" alt="Laravel" width="33"/>
+
+[Acesse o post oficial no UB Social](https://ubsocial.github.io/posts/post12.html)
 
 ## Conceitos teóricos
 - **API**: Application Programming Interface tem função de intermediar comunicação universal entre diferentes sistemas, assim como do banco de dados com o próprio sistema (Interno ou externo), utilizando protocolo de comunicação HTTP (XML/JSON), requisitados via URL específica, independente da tecnologia do sistema que irá consumí-la (Acessá-la). Pode-se solicitar dados via API, através de métodos como POST, assim como a API poderá fornecer-lhe dados, via métodos como GET. Em ambos casos, utilizando a comunicação universal citada.
