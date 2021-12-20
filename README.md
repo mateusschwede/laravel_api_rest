@@ -49,7 +49,7 @@ Categories=Development;Code;
 php artisan make:model Artigo -m
 php artisan make:controller ArtigoController --resource
 
-2. Configurar Migration reate_artigos_table.php (Após código, realizar comando 'php artisan migrate')
+2. Configurar Migration create_artigos_table.php (Após código, realizar comando 'php artisan migrate')
 ~~~php
 <?php
 use Illuminate\Database\Migrations\Migration;
