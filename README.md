@@ -209,5 +209,5 @@ Value: application/json
 }
 ~~~
 
-11. o Postman, testar API para remover o artigo 1:
+11. No Postman, testar API para remover o artigo 1:
 DELETE: http://127.0.0.1:8000/api/artigo/1
